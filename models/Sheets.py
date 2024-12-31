@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from openpyxl import worksheet
 from typing import Generator
 
+
 @dataclass
 class Sheet:
 

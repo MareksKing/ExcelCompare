@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from .Sheets import Sheet
 from openpyxl import load_workbook, Workbook
 
+
 @dataclass
 class Excel:
 
@@ -11,7 +12,6 @@ class Excel:
     def workbook(self):
         workbook: Workbook = load_workbook(self.file_path, read_only=True)
         return workbook
-        
 
     @property
     def sheet_names(self):
@@ -23,8 +23,13 @@ class Excel:
         sheets: list[Sheet] = []
         for sheet_name in self.sheet_names:
             sheet = self.workbook.get_sheet_by_name(sheet_name)
-            
-            sheets.append(Sheet(sheet_name, sheet.max_row, sheet.max_column, sheet.values))
+            values = sheet.values
+            all_values = []
+            for value in values:
+                v = []
+                v.extend(value)
+                all_values.append(v)
+            sheets.append(Sheet(sheet_name, sheet.max_row, sheet.max_column, all_values))
 
         return sheets
 

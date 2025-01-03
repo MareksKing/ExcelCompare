@@ -1,0 +1,5 @@
+EMOJIS = {
+    "CHECKMARK": "✅",
+    "WARNING": "🟡",
+    "ERROR": "❌",
+}

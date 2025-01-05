@@ -19,3 +19,4 @@ def compare_column_count(sheet1: Sheet, sheet2: Sheet) -> bool:
 
 def compare_values(sheet1: Sheet, sheet2: Sheet) -> bool:
     return sheet1.values == sheet2.values
+

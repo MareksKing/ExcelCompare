@@ -56,13 +56,53 @@ def compare_sheet_names_lists(excel1: Excel, excel2: Excel) -> list[str]:
     return result
 
 
-def compare_sheet_dimensions(excel1: Excel, excel2: Excel):
-    # TODO! COMPARE SHEET DIMENSIONS ROWS AND COLUMNS FUTURE MAREK
+def compare_sheet_columns(sheet1: Sheet, sheet2: Sheet) -> bool | int:
+    if compare_column_count(sheet1, sheet2):
+        return True
+
+    # If sheet column count differs then return amount of columns missing from the smallest one, and in the bigger excel mark the (max_column - missing_amount) in orange
+    return abs(sheet1.columns - sheet2.columns)
+
+
+def compare_sheet_rows(sheet1: Sheet, sheet2: Sheet) -> bool | int:
+    if compare_row_count(sheet1, sheet2):
+        return True
+
+    # If sheet column count differs then return amount of columns missing from the smallest one, and in the bigger excel mark the (max_column - missing_amount) in orange
+    return abs(sheet1.rows - sheet2.rows)
+
+
+def compare_sheet_columns_dim(excel1: Excel, excel2: Excel):
     sheetCount, same_amount = get_sheet_count(excel1, excel2)
     sheets1 = excel1.sheets
     sheets2 = excel2.sheets
     result = []
-    if same_amount:
-        for i in range(0, sheetCount):
-            if compare_column_count(sheets1[i], sheets2[i]):
-                continue
+    for i in range(0, sheetCount):
+        sheet_compare = compare_sheet_columns(sheets1[i], sheets2[i])
+        if isinstance(sheet_compare, bool):
+            continue
+        result.append((i, sheet_compare))
+    if not same_amount:
+        max_sheet_count = max(len(sheets1), len(sheets2))
+        for i in range(sheetCount, max_sheet_count):
+            result.append((i, 0))
+    return result
+
+
+def compare_sheet_rows_dim(excel1: Excel, excel2: Excel):
+    sheetCount, same_amount = get_sheet_count(excel1, excel2)
+    sheets1 = excel1.sheets
+    sheets2 = excel2.sheets
+    result = []
+    for i in range(0, sheetCount):
+        sheet_compare = compare_sheet_rows(sheets1[i], sheets2[i])
+        if isinstance(sheet_compare, bool):
+            continue
+        result.append((i, sheet_compare))
+    if not same_amount:
+        max_sheet_count = max(len(sheets1), len(sheets2))
+        for i in range(sheetCount, max_sheet_count):
+            result.append((i, 0))
+    return result
+
+

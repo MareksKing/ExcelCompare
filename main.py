@@ -5,8 +5,8 @@ import logging
 
 from models.ExcelFile import Excel
 from comparator.SheetComparator import compare_all_sheet_properties, compare_sheet_name
-from comparator.ExcelComparator import compare_sheet_names_lists
-from constants.emoji import EMOJIS
+from comparator.ExcelComparator import compare_sheet_names_lists, compare_sheet_columns_dim, compare_sheet_rows_dim
+
 
 log = logging.getLogger(__name__)
 
@@ -20,8 +20,12 @@ def main():
 
     log.info("Getting the sheet count")
 
-    compared_sheets = compare_sheet_names_lists(excel, excel2)
-    print(compared_sheets)
+    result_sheet_names = compare_sheet_names_lists(excel, excel2)
+    result_sheet_columns = compare_sheet_columns_dim(excel, excel2)
+    result_sheet_rows = compare_sheet_rows_dim(excel, excel2)
+    print(result_sheet_names)
+    print(result_sheet_columns)
+    print(result_sheet_rows)
 
 
 if __name__ == "__main__":

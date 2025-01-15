@@ -2,6 +2,7 @@ from models.ExcelFile import Excel
 from models.Sheets import Sheet
 from constants.emoji import EMOJIS
 from comparator.SheetComparator import compare_sheet_name, compare_row_count, compare_column_count
+from typing import Generator
 import logging
 
 log = logging.getLogger()
@@ -105,4 +106,32 @@ def compare_sheet_rows_dim(excel1: Excel, excel2: Excel):
             result.append((i, 0))
     return result
 
+
+def get_sheet_values(sheet1: Sheet, sheet2: Sheet):
+    sheet1Values = sheet1.values
+    sheet2Values = sheet2.values
+    return sheet1Values, sheet2Values
+
+
+def compare_values(values1: Generator, values2: Generator):
+    string = ""
+    for values in zip(values1, values2):
+        list1, list2 = values
+        for items in zip(list1, list2):
+            item1, item2 = items
+            if item1 == item2:
+                string += f" {str(item1)} "
+            else:
+                string += f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
+    print(string)
+
+
+def compare_sheet_values(excel1: Excel, excel2: Excel):
+    sheetCount, same_amount = get_sheet_count(excel1, excel2)
+    sheets1 = excel1.sheets
+    sheets2 = excel2.sheets
+    result = []
+    for i in range(0, sheetCount):
+        values1, values2 = get_sheet_values(sheets1[i], sheets2[i])
+        compare_values(values1, values2)
 

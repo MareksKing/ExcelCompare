@@ -39,20 +39,21 @@ def compare_sheet_names_lists(excel1: Excel, excel2: Excel) -> list[str]:
     if same_amount:
         for i in range(0, sheetCount):
             if not compare_sheet_name(sheets1[i], sheets2[i]):
-                result.append(f"Excel1: {sheets1[i].sheet_name} | Excel2: {sheets2.sheet_name}")
-            result.append(sheets1[i].sheet_name)
+                result.append(f"Excel1 {sheets1[i].sheet_name} | Excel2 {sheets2[i].sheet_name}")
+            else:
+                result.append(sheets1[i].sheet_name)
     else:
         # TODO! 🤮 clean up
         (smaller, smallerName), (bigger, biggerName) = get_smaller_sheet_amount(sheets1, sheets2)
         for i in range(0, len(smaller)):
             if not compare_sheet_name(sheets1[i], sheets2[i]):
-                result.append(f"Excel1: {sheets1[i].sheet_name} | Excel2: {sheets2.sheet_name}")
+                result.append(f"Excel1 {sheets1[i].sheet_name} | Excel2 {sheets2[i].sheet_name}")
             result.append(sheets1[i].sheet_name)
         for i in range(len(smaller), len(bigger)):
             if smallerName == "Excel1":
-                result.append(f"Excel1: {EMOJIS.get('ERROR')} | Excel2: {sheets2[i].sheet_name}")
+                result.append(f"Excel1 {EMOJIS.get('ERROR')} | Excel2 {sheets2[i].sheet_name}")
             if smallerName == "Excel2":
-                result.append(f"Excel1: {sheets1[i].sheet_name} | Excel2: {EMOJIS.get('ERROR')}")
+                result.append(f"Excel1 {sheets1[i].sheet_name} | Excel2 {EMOJIS.get('ERROR')}")
 
     return result
 
@@ -115,15 +116,19 @@ def get_sheet_values(sheet1: Sheet, sheet2: Sheet):
 
 def compare_values(values1: Generator, values2: Generator):
     string = ""
+    result_val = []
+    val_list = []
     for values in zip(values1, values2):
         list1, list2 = values
         for items in zip(list1, list2):
             item1, item2 = items
             if item1 == item2:
-                string += f" {str(item1)} "
+                string = f"{str(item1)}"
             else:
-                string += f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
-    print(string)
+                string = f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
+            result_val.append(string)
+        val_list.append(result_val)
+    return val_list
 
 
 def compare_sheet_values(excel1: Excel, excel2: Excel):
@@ -133,5 +138,7 @@ def compare_sheet_values(excel1: Excel, excel2: Excel):
     result = []
     for i in range(0, sheetCount):
         values1, values2 = get_sheet_values(sheets1[i], sheets2[i])
-        compare_values(values1, values2)
+        result.append(compare_values(values1, values2))
+    return result
+
 

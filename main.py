@@ -1,6 +1,3 @@
-import pandas as pd
-import openpyxl
-from pprint import pp
 import logging
 
 from models.ExcelFile import Excel

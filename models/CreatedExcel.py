@@ -20,10 +20,10 @@ class ExcelFinal:
     def to_excel(self):
         wb = self.create_workbook()
         self.create_workbook_sheets(wb)
+        wb.save(self.get_file_path)
 
     def create_workbook(self):
         workbook = opl.Workbook()
-        workbook.save(self.get_file_path)
         return workbook
 
     def create_workbook_sheets(self, workbook: opl.Workbook):

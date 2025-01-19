@@ -118,16 +118,51 @@ def compare_values(values1: Generator, values2: Generator):
     string = ""
     result_val = []
     val_list = []
-    for values in zip(values1, values2):
-        list1, list2 = values
-        for items in zip(list1, list2):
-            item1, item2 = items
-            if item1 == item2:
-                string = f"{str(item1)}"
+    for i, value in enumerate(values1):
+        try:
+            list1, list2 = value, values2[i]
+            if len(list1) == len(list2):
+                for items in zip(list1, list2):
+                    item1, item2 = items
+                    if item1 == item2:
+                        string = f"{str(item1)}"
+                    else:
+                        string = f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
+                    result_val.append(string)
+                val_list.append(result_val)
+                result_val = []
             else:
-                string = f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
-            result_val.append(string)
-        val_list.append(result_val)
+                # TODO: Fix this for uneven row/column count values
+                for j, items in enumerate(list1):
+                    item1, item2 = items, list2[j]
+                    try:
+                        if item1 == item2:
+                            string = f"{str(item1)}"
+                        else:
+                            string = f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
+                        result_val.append(string)
+                    except IndexError:
+                        string = f"{EMOJIS.get('WARNING')} {str(item1)} | ''"
+                        result_val.append(string)
+                val_list.append(result_val)
+                result_val = []
+        except IndexError:
+            for val in value:
+                string = f"{EMOJIS.get('WARNING')} {str(val)} | ''"
+                result_val.append(string)
+            val_list.append(result_val)
+            result_val = []
+#    for values in zip(values1, values2):
+#        list1, list2 = values
+#        for items in zip(list1, list2):
+#            item1, item2 = items
+#            if item1 == item2:
+#                string = f"{str(item1)}"
+#            else:
+#                string = f"{EMOJIS.get('WARNING')} {str(item1)} | {str(item2)}"
+#            result_val.append(string)
+#        val_list.append(result_val)
+#        result_val = []
     return val_list
 
 

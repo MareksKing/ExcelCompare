@@ -23,10 +23,10 @@ def main():
     result_sheet_rows = compare_sheet_rows_dim(excel, excel2)
     result_sheet_values = compare_sheet_values(excel, excel2)
 
-    print(result_sheet_names)
-    print(result_sheet_columns)
-    print(result_sheet_rows)
-    print(result_sheet_values)
+    # print(result_sheet_names)
+    # print(result_sheet_columns)
+    # print(result_sheet_rows)
+    # print(result_sheet_values)
 
     final_excel = ExcelFinal(result_sheet_names, result_sheet_rows,
                              result_sheet_columns, result_sheet_values)

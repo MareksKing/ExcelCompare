@@ -1,5 +1,7 @@
 import openpyxl as opl
-from openpyxl.worksheet.worksheet import Worksheet as WS
+from openpyxl.worksheet.worksheet import Worksheet
+from openpyxl.styles import PatternFill
+from openpyxl.styles.colors import Color
 import os
 
 
@@ -24,8 +26,9 @@ class ExcelFinal:
         for i, sheet_name in enumerate(wb.sheetnames):
             sheet = wb.get_sheet_by_name(sheet_name)
             try:
-                print(i, self.values[i])
+                # print(i, self.values[i])
                 self.add_values(sheet, self.values[i])
+                self.set_row_colors(self.rows[i], sheet)
             except IndexError:
                 continue
         wb.save(self.get_file_path)
@@ -40,13 +43,24 @@ class ExcelFinal:
             workbook.create_sheet(sheets[i], i)
         workbook.save(self.get_file_path)
 
-    def add_values(self, sheet: WS, values: list[list]):
+    def add_values(self, sheet: Worksheet, values: list[list]):
         for row_values in values:
             sheet.append(row_values)
 
-    def set_row_colors(self, rows: (int, int), sheet: WS):
+    def set_row_colors(self, rows: (int, int), sheet: Worksheet):
         row_count = sheet.max_row
         idx, count = rows
+        print("ROW_COUNT:", row_count, "COUNT:", count)
         min_row_count = row_count - count
-        # TODO: Add the color to the diff rows
-        pass
+        if row_count == min_row_count:
+            print("MIN ROW COUNT IS THE SAME AS ROW COUNT")
+            pass
+            # Add color to all the sheet value cells
+            # return
+
+        sheet_rows = sheet.iter_rows(min_row=min_row_count, max_row=row_count,
+                                     min_col=1, max_col=sheet.max_column)
+        print(min_row_count, row_count, 1, sheet.max_column)
+        for row in sheet_rows:
+            for value in row:
+                value.fill = PatternFill(bgColor="F5B042")
